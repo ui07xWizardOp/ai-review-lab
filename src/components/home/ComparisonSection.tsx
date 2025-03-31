@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { ChevronLeftRight, Filter } from 'lucide-react';
+import { ChevronsLeftRight, Filter } from 'lucide-react';
 
 const models = [
   { id: 1, name: "GPT-4o", company: "OpenAI" },
@@ -75,7 +75,7 @@ const ComparisonSection: React.FC = () => {
             <Card className="mb-6 bg-background/50 backdrop-blur-sm border border-border/50">
               <CardHeader>
                 <CardTitle className="text-xl flex items-center">
-                  <ChevronLeftRight className="mr-2 text-turquoise" size={20} />
+                  <ChevronsLeftRight className="mr-2 text-turquoise" size={20} />
                   Select Models to Compare
                 </CardTitle>
               </CardHeader>
