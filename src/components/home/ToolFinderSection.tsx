@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Code, PenTool, Brain, BarChart3, MessageSquare } from 'lucide-react';
+import { Search, Code, PenTool, Brain, BarChart3, MessageSquare, Calendar, User, ArrowRight } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const categories = [
   { 
@@ -35,6 +36,54 @@ const categories = [
     name: 'Conversational AI',
     icon: <MessageSquare className="h-5 w-5 mr-2" />,
     description: 'Chatbots and conversational assistants'
+  }
+];
+
+const blogPosts = [
+  {
+    id: 1,
+    title: "How to Evaluate Large Language Models: A Comprehensive Guide",
+    excerpt: "Learn the key metrics and benchmarks for assessing LLM performance and making informed decisions.",
+    author: "Alex Chen",
+    date: "May 5, 2023",
+    readTime: "8 min read",
+    category: "Guides"
+  },
+  {
+    id: 2,
+    title: "The Rise of Multimodal AI: Bridging Text, Vision, and Audio",
+    excerpt: "Explore how the latest multimodal models are changing the AI landscape with unified understanding across modalities.",
+    author: "Sophia Martinez",
+    date: "April 28, 2023",
+    readTime: "6 min read",
+    category: "Trends"
+  },
+  {
+    id: 3,
+    title: "Open Source vs. Commercial AI Models: Making the Right Choice",
+    excerpt: "Compare the advantages and limitations of open source and commercial AI models for your specific needs.",
+    author: "James Wilson",
+    date: "April 15, 2023",
+    readTime: "10 min read",
+    category: "Analysis"
+  },
+  {
+    id: 4,
+    title: "Fine-tuning vs. RAG: Strategies for Customizing AI Models",
+    excerpt: "A detailed comparison of fine-tuning and retrieval-augmented generation approaches for specialized AI applications.",
+    author: "Emma Johnson",
+    date: "April 8, 2023",
+    readTime: "12 min read",
+    category: "Technical"
+  },
+  {
+    id: 5,
+    title: "AI Agents: The Next Evolution in Autonomous Systems",
+    excerpt: "Discover how AI agents are transforming automation with improved reasoning and decision-making capabilities.",
+    author: "David Kim",
+    date: "March 30, 2023",
+    readTime: "7 min read",
+    category: "Innovation"
   }
 ];
 
@@ -154,6 +203,63 @@ const ToolFinderSection: React.FC = () => {
               <Button variant="outline" className="w-full">View All Categories</Button>
             </div>
           </div>
+        </div>
+
+        {/* Blog Posts Horizontal Scrolling Section */}
+        <div className="mt-16">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6">
+            <div>
+              <h2 className="text-3xl font-bold mb-3 dark:text-cyber-teal dark:cyberpunk-glow">Latest Articles</h2>
+              <p className="text-muted-foreground max-w-2xl">
+                Stay updated with the latest trends, guides, and insights on AI tools and technologies
+              </p>
+            </div>
+            <Button 
+              variant="link" 
+              className="text-accent dark:text-cyber-teal flex items-center group mt-4 md:mt-0 dark:cyberpunk-glow"
+            >
+              View all posts
+              <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+
+          <ScrollArea className="w-full whitespace-nowrap pb-4">
+            <div className="flex space-x-4 p-1">
+              {blogPosts.map((post) => (
+                <Card 
+                  key={post.id} 
+                  className="blog-card min-w-[300px] max-w-[350px] hover-lift dark:cyberpunk-card transition-all duration-300"
+                >
+                  <CardHeader className="relative">
+                    <div className="absolute top-4 right-4">
+                      <span className="px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent dark:bg-cyber-pink/20 dark:text-cyber-pink">
+                        {post.category}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-xl line-clamp-2">{post.title}</h3>
+                    <div className="flex items-center text-sm text-muted-foreground mt-2">
+                      <User size={14} className="mr-1" />
+                      <span className="mr-4">{post.author}</span>
+                      <Calendar size={14} className="mr-1" />
+                      <span>{post.date}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground line-clamp-3 whitespace-normal">{post.excerpt}</p>
+                  </CardContent>
+                  <CardFooter className="flex justify-between">
+                    <span className="text-xs text-muted-foreground">{post.readTime}</span>
+                    <Button 
+                      variant="link" 
+                      className="text-primary hover:text-primary/80 p-0 dark:text-cyber-teal"
+                    >
+                      Read more
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       </div>
     </section>
