@@ -89,18 +89,21 @@ const BlogSection: React.FC = () => {
   
   return (
     <section 
-      className="py-20 px-4 bg-gradient-to-b from-background via-background to-muted/10 section-focus"
+      className="py-20 px-4 bg-gradient-to-b from-background to-muted/30 dark:from-cyber-purple dark:to-background section-focus"
       data-animate="true"
     >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
-            <h2 className="text-3xl font-bold mb-4">Blog Posts</h2>
+            <h2 className="text-3xl font-bold mb-4 dark:text-cyber-teal dark:cyberpunk-glow">Blog Posts</h2>
             <p className="text-muted-foreground max-w-2xl">
               Deep dives, tutorials, and insights on AI models, tools, and industry trends.
             </p>
           </div>
-          <Button variant="link" className="text-san-marino flex items-center group mt-4 md:mt-0">
+          <Button 
+            variant="link" 
+            className="text-accent dark:text-cyber-teal flex items-center group mt-4 md:mt-0 dark:cyberpunk-glow"
+          >
             View all posts
             <ArrowRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
           </Button>
@@ -125,14 +128,14 @@ const BlogSection: React.FC = () => {
                   className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
                 >
                   <Card 
-                    className={`blog-card h-full hover-lift border border-border/50 overflow-hidden transition-all duration-500 ${
-                      index === activeIndex ? 'ring-2 ring-turquoise/50' : ''
+                    className={`blog-card h-full hover-lift dark:cyberpunk-card transition-all duration-500 ${
+                      index === activeIndex ? 'dark:border-cyber-teal/50 dark:shadow-[0_0_15px_rgba(72,250,238,0.2)]' : ''
                     }`}
                     onMouseEnter={() => setActiveIndex(index)}
                   >
                     <CardHeader className="relative">
                       <div className="absolute top-4 right-4">
-                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent">
+                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent dark:bg-cyber-pink/20 dark:text-cyber-pink">
                           {post.category}
                         </span>
                       </div>
@@ -149,15 +152,20 @@ const BlogSection: React.FC = () => {
                     </CardContent>
                     <CardFooter className="flex justify-between mt-auto">
                       <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                      <Button variant="link" className="text-turquoise hover:text-turquoise/80 p-0">Read more</Button>
+                      <Button 
+                        variant="link" 
+                        className="text-primary hover:text-primary/80 p-0 dark:text-cyber-teal"
+                      >
+                        Read more
+                      </Button>
                     </CardFooter>
                   </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
             <div className="hidden md:block">
-              <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm border-turquoise/20 hover:bg-turquoise/10 hover:border-turquoise/30" />
-              <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm border-turquoise/20 hover:bg-turquoise/10 hover:border-turquoise/30" />
+              <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 bg-background/80 dark:bg-cyber-purple/50 backdrop-blur-sm border-primary/20 hover:bg-primary/10 hover:border-primary/30 dark:border-cyber-teal/30 dark:hover:border-cyber-teal/50" />
+              <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 bg-background/80 dark:bg-cyber-purple/50 backdrop-blur-sm border-primary/20 hover:bg-primary/10 hover:border-primary/30 dark:border-cyber-teal/30 dark:hover:border-cyber-teal/50" />
             </div>
           </Carousel>
         </div>
@@ -168,7 +176,7 @@ const BlogSection: React.FC = () => {
               <button
                 key={index}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  index === activeIndex ? 'bg-turquoise w-6' : 'bg-muted'
+                  index === activeIndex ? 'bg-primary dark:bg-cyber-teal dark:shadow-[0_0_5px_theme(colors.cyber-teal)] w-6' : 'bg-muted dark:bg-muted/30'
                 }`}
                 onClick={() => {
                   setActiveIndex(index);
