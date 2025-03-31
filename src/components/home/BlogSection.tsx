@@ -3,6 +3,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, User } from 'lucide-react';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel';
 
 const blogPosts = [
   {
@@ -53,47 +60,38 @@ const blogPosts = [
 ];
 
 const BlogSection: React.FC = () => {
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [autoplayEnabled, setAutoplayEnabled] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Autoplay functionality
   useEffect(() => {
-    if (!carouselRef.current) return;
-    
-    let interval: NodeJS.Timeout;
-    
-    const startAutoScroll = () => {
-      if (isPaused) return;
-      
-      interval = setInterval(() => {
-        if (isPaused) return;
-        
-        setActiveIndex(prev => {
-          const next = (prev + 1) % blogPosts.length;
-          scrollToCard(next);
-          return next;
-        });
+    if (autoplayEnabled) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex(prev => (prev + 1) % blogPosts.length);
       }, 5000);
-    };
-    
-    startAutoScroll();
+    }
     
     return () => {
-      clearInterval(interval);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
-  }, [isPaused]);
-  
-  const scrollToCard = (index: number) => {
-    if (!carouselRef.current) return;
-    
-    const cards = carouselRef.current.querySelectorAll('.blog-card');
-    if (cards[index]) {
-      cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+  }, [autoplayEnabled]);
+
+  const handleMouseEnter = () => {
+    setAutoplayEnabled(false);
+  };
+
+  const handleMouseLeave = () => {
+    setAutoplayEnabled(true);
   };
   
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/20 dark:from-background dark:to-valhalla/30 section-focus" data-animate="true">
+    <section 
+      className="py-20 px-4 bg-gradient-to-b from-background via-background to-muted/10 section-focus"
+      data-animate="true"
+    >
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
@@ -109,42 +107,59 @@ const BlogSection: React.FC = () => {
         </div>
         
         <div 
-          ref={carouselRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-hidden"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          className="relative"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {blogPosts.map((post, index) => (
-            <Card 
-              key={post.id} 
-              className={`blog-card hover-lift border border-border/50 overflow-hidden transition-all duration-500 ${
-                index === activeIndex ? 'ring-2 ring-turquoise' : ''
-              }`}
-              onMouseEnter={() => setActiveIndex(index)}
-            >
-              <CardHeader className="relative">
-                <div className="absolute top-4 right-4">
-                  <span className="px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent">
-                    {post.category}
-                  </span>
-                </div>
-                <h3 className="font-bold text-xl line-clamp-2">{post.title}</h3>
-                <div className="flex items-center text-sm text-muted-foreground mt-2">
-                  <User size={14} className="mr-1" />
-                  <span className="mr-4">{post.author}</span>
-                  <Calendar size={14} className="mr-1" />
-                  <span>{post.date}</span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <span className="text-xs text-muted-foreground">{post.readTime}</span>
-                <Button variant="link" className="text-san-marino p-0">Read more</Button>
-              </CardFooter>
-            </Card>
-          ))}
+          <Carousel 
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {blogPosts.map((post, index) => (
+                <CarouselItem 
+                  key={post.id} 
+                  className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3"
+                >
+                  <Card 
+                    className={`blog-card h-full hover-lift border border-border/50 overflow-hidden transition-all duration-500 ${
+                      index === activeIndex ? 'ring-2 ring-turquoise/50' : ''
+                    }`}
+                    onMouseEnter={() => setActiveIndex(index)}
+                  >
+                    <CardHeader className="relative">
+                      <div className="absolute top-4 right-4">
+                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent">
+                          {post.category}
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-xl line-clamp-2">{post.title}</h3>
+                      <div className="flex items-center text-sm text-muted-foreground mt-2">
+                        <User size={14} className="mr-1" />
+                        <span className="mr-4">{post.author}</span>
+                        <Calendar size={14} className="mr-1" />
+                        <span>{post.date}</span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground line-clamp-3">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="flex justify-between mt-auto">
+                      <span className="text-xs text-muted-foreground">{post.readTime}</span>
+                      <Button variant="link" className="text-turquoise hover:text-turquoise/80 p-0">Read more</Button>
+                    </CardFooter>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="hidden md:block">
+              <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm border-turquoise/20 hover:bg-turquoise/10 hover:border-turquoise/30" />
+              <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm border-turquoise/20 hover:bg-turquoise/10 hover:border-turquoise/30" />
+            </div>
+          </Carousel>
         </div>
         
         <div className="flex justify-center mt-8">
@@ -157,7 +172,6 @@ const BlogSection: React.FC = () => {
                 }`}
                 onClick={() => {
                   setActiveIndex(index);
-                  scrollToCard(index);
                 }}
               />
             ))}
