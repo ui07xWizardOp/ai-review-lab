@@ -18,6 +18,12 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
+  // Add console log to debug theme toggle
+  const handleThemeToggle = () => {
+    console.log('Theme toggle clicked, current theme:', theme);
+    toggleTheme();
+  };
+  
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
@@ -48,8 +54,9 @@ const NavBar: React.FC = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={toggleTheme}
+              onClick={handleThemeToggle}
               className="hover-lift"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </Button>
